@@ -52,6 +52,7 @@ def delete_car(request, id):
     theCar.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['ORDER'])
 def order_car(request, id):
     try:
@@ -59,13 +60,19 @@ def order_car(request, id):
     except Car.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     theCar.order()
-    return Response ???? :D
+    return None
+
 
 @api_view(['CANCEL'])
 def cancel_ordered_car(id):
+    pass
+
 
 @api_view(['RENT'])
 def rent_car(id):
+    pass
+
 
 @api_view(['RETURN'])
 def return_car(id):
+    pass
