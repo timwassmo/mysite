@@ -51,3 +51,21 @@ def delete_car(request, id):
         return Response(status=status.HTTP_404_NOT_FOUND)
     theCar.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['ORDER'])
+def order_car(request, id):
+    try:
+        theCar = Car.objects.get(pk=id)
+    except Car.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    theCar.order()
+    return Response ???? :D
+
+@api_view(['CANCEL'])
+def cancel_ordered_car(id):
+
+@api_view(['RENT'])
+def rent_car(id):
+
+@api_view(['RETURN'])
+def return_car(id):

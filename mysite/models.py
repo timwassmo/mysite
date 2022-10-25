@@ -18,7 +18,7 @@ class Employee(models.Model):
     branch = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name + self.year + self.branch
+        return self.name + " " + self.year + " " + self.branch
 
 
 class Customer(models.Model):
