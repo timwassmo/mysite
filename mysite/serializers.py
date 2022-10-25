@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Car, Employee
+from .models import Car, Employee, Customer
 
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,4 +10,10 @@ class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = ['id', 'name', 'address', 'branch']
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ['id', 'name', 'age', 'address']
 
