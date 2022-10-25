@@ -9,14 +9,6 @@ class Car(models.Model):
     def __str__(self):
         return self.make + ' ' + self.carmodel
 
-class Customer(models.Model):
-    name = models.CharField(max_length=50)
-    age = models.IntegerField()
-    address = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name + " " + self.age + ", " + self.address
-
 class Employee(models.Model):
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
@@ -24,3 +16,13 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.name + self.year + self.branch
+
+
+class Customer(models.Model):
+    name = models.CharField(max_length=50)
+    age = models.IntegerField()
+    address = models.CharField(max_length=50)
+
+
+    def __str__(self):
+        return self.name + " " + self.age + ", " + self.address
