@@ -19,21 +19,21 @@ class Employee(models.Model):
     branch = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name + " " + self.year + " " + self.branch
+        return self.name + " " + self.address + " " + self.branch
 
 
 class Customer(models.Model):
     name = models.CharField(max_length=50)
     age = models.IntegerField()
     address = models.CharField(max_length=50)
-    activer_order = models.BooleanField()
+    active_order = models.BooleanField(default = False)
 
     def __str__(self):
         return self.name + " " + str(self.age) + ", " + self.address
 
 class Order(models.Model):
-    car = models.CharField(max_length = 50)
-    customer = models.CharField(max_length = 50)
+    car = models.IntegerField()
+    customer = models.IntegerField()
 
     def __str__(self):
         return self.car + " " + self.customer

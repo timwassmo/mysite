@@ -17,7 +17,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['id', 'name', 'age', 'address', 'active-order']
+        fields = ['id', 'name', 'age', 'address', 'active_order']
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
