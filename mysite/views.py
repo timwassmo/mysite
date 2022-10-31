@@ -1,6 +1,6 @@
-from .models import Car, Customer, Order
+from .models import Car, Customer, Order, Employee
 from rest_framework.response import Response
-from .serializers import CarSerializer, CustomerSerializer, OrderSerializer
+from .serializers import CarSerializer, CustomerSerializer, OrderSerializer, EmployeeSerializer
 from rest_framework import status
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
@@ -18,6 +18,12 @@ def get_customers(request):
     serializer = CustomerSerializer(customers, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_employees(request):
+    employees = Employee.objects.all()
+    serializer = EmployeeSerializer(employees, many = True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def save_car(request):
@@ -25,8 +31,6 @@ def save_car(request):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
 
 
 @api_view(['PUT'])
@@ -54,7 +58,6 @@ def delete_car(request, id):
 
 
 @api_view(['POST'])
-
 def order_car(request, car_id, customer_id):
     """Creates order with key for Customer and Car. 
     Edits customer order status and car availability"""
@@ -83,8 +86,10 @@ def order_car(request, car_id, customer_id):
     return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view([''])
-def cancel_ordered_car(id):
+@api_view(['DELETE'])
+def cancel_ordered_car(request):
+
+
     pass
 
 
