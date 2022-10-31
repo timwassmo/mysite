@@ -1,6 +1,6 @@
-from .models import Car, Customer, Order
+from .models import Car, Customer, Order, Employee
 from rest_framework.response import Response
-from .serializers import CarSerializer, CustomerSerializer, OrderSerializer
+from .serializers import CarSerializer, CustomerSerializer, OrderSerializer, EmployeeSerializer
 from rest_framework import status
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
@@ -18,6 +18,12 @@ def get_cars(request):
 def get_customers(request):
     customers = Customer.objects.all()
     serializer = CustomerSerializer(customers, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_employees(request):
+    employees = Employee.objects.all()
+    serializer = EmployeeSerializer(employees, many = True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
