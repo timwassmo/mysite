@@ -1,3 +1,4 @@
+from operator import mod
 from unittest.util import _MAX_LENGTH
 from django.db import models
 
@@ -36,4 +37,4 @@ class Order(models.Model):
     customer = models.IntegerField()
 
     def __str__(self):
-        return self.car + " " + self.customer
+        return str(self.car) + " " + str(self.customer)
