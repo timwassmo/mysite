@@ -96,11 +96,33 @@ def cancel_ordered_car(id):
     pass
 
 
-@api_view([""])
-def rent_car(id):
-    pass
+@api_view(["PUT"])
+def rent_car(request):
+    """ Implement an endpoint 'rent-car' where a #customer-id, #car-id is passed as parameters. The
+    system must check that the customer with customer-id has a booking for the car. The car's
+    status is changed from 'booked' to 'rented'.  """
+
+    car_id = request.data['car']
+    customer_id = request.data['customer']
+    the_order = Order.objects.get(car = car_id, customer = customer_id)
+    if the_order.car == car_id and the_order.customer == customer_id:
+        Car.objects.filter(pk=car_id).update(status="rented")
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    
 
 
-@api_view([""])
-def return_car(id):
-    pass
+@api_view(["PUT"]):
+def return_car(request):
+    """- Implement an endpoint 'return-car' where a customer-id, car-id is passed as parameters.
+    Car's status (e.g., ok or damaged) during the return will also be passed. The system must
+    check that the customer with customer-id has rented the car. The car's status is changed
+    from 'booked' to 'available' or 'damaged' """
+    car_id = request.data['car']
+    customer_id = request.data['customer']
+    the_order = Order.objects.get(car = car_id, customer = customer_id)
+
+    if the_order.car == car_id and the_order.customer == customer_id:
+        Car.objects.filter(pk=car_id).update(status="available")
+        return Response(status=status.HTTP_204_NO_CONTENT)
