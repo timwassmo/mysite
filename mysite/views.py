@@ -92,9 +92,21 @@ def order_car(request):
 
 
 @api_view(["DELETE"])
-def cancel_ordered_car(id):
-    pass
+def cancel_ordered_car(request):
+    """Implement an endpoint ‘cancel-order-car’ where a customer-id, car-id is passed as parameters.
+    The system must check that the customer with customer-id has booked for the car.
+    If the customer has booked the car, the car becomes available"""
 
+    car_id = request.data['car']
+    customer_id = request.data['customer']
+    cancel_order = Order.objects.get(car = car_id, customer = customer_id)
+    try:
+        if cancel_order.car == car_id and cancel_order.customer == customer_id:
+            Car.objects.filter(pk=car_id).update(status='available')
+            cancel_order.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+    except Order.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 @api_view(["PUT"])
 def rent_car(request):
@@ -113,7 +125,7 @@ def rent_car(request):
     
 
 
-@api_view(["PUT"]):
+@api_view(["PUT"])
 def return_car(request):
     """- Implement an endpoint 'return-car' where a customer-id, car-id is passed as parameters.
     Car's status (e.g., ok or damaged) during the return will also be passed. The system must
