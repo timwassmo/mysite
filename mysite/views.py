@@ -34,6 +34,20 @@ def save_car(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+@api_view(["POST"])
+def save_customer(request):
+    serializer = CustomerSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+@api_view(["POST"])
+def save_employee(request):
+    serializer = EmployeeSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 @api_view(["PUT"])
 def update_car(request, id):
@@ -42,6 +56,32 @@ def update_car(request, id):
     except Car.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = CarSerializer(the_car, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(["PUT"])
+def update_employee(request, id):
+    try:
+        the_employee = Employee.objects.get(pk=id)
+    except Employee.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    serializer = EmployeeSerializer(the_employee, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(["PUT"])
+def update_customer(request, id):
+    try:
+        the_customer = Customer.objects.get(pk=id)
+    except Customer.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    serializer = CustomerSerializer(the_customer, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
@@ -56,6 +96,24 @@ def delete_car(request, id):
     except Car.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     the_car.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(["DELETE"])
+def delete_customer(request, id):
+    try:
+        the_customer = Customer.objects.get(pk=id)
+    except Customer.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    the_customer.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(["DELETE"])
+def delete_employee(request, id):
+    try:
+        the_employee = Customer.objects.get(pk=id)
+    except Customer.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    the_employee.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -113,7 +171,7 @@ def rent_car(request):
     
 
 
-@api_view(["PUT"]):
+@api_view(["DELETE"])
 def return_car(request):
     """- Implement an endpoint 'return-car' where a customer-id, car-id is passed as parameters.
     Car's status (e.g., ok or damaged) during the return will also be passed. The system must
@@ -122,7 +180,16 @@ def return_car(request):
     car_id = request.data['car']
     customer_id = request.data['customer']
     the_order = Order.objects.get(car = car_id, customer = customer_id)
+    the_status = "available"
+    try: 
+        if request.data['status'] in ["damaged", "broken", "crashed"]:
+            the_status = request.data['status']
+    except: 
+        pass
+        
 
     if the_order.car == car_id and the_order.customer == customer_id:
-        Car.objects.filter(pk=car_id).update(status="available")
+        Car.objects.filter(pk=car_id).update(status=the_status)
+        Customer.objects.filter(pk=customer_id).update(active_order = False)
+        the_order.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
