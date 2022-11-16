@@ -159,12 +159,12 @@ def cancel_ordered_car(request):
     customer_id = request.data['customer']
     cancel_order = Order.objects.get(car = car_id, customer = customer_id)
     try:
-        if cancel_order.car == car_id and cancel_order.customer == customer_id:
-            Car.objects.filter(pk=car_id).update(status='available')
-            cancel_order.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+    
+        Car.objects.filter(pk=car_id).update(status='available')
+        cancel_order.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     except Order.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["PUT"])
 def rent_car(request):
